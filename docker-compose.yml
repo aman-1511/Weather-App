@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    container_name: weather_backend
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - weather-network
+
+  frontend:
+    build: ./frontend
+    container_name: weather_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:5000
+    networks:
+      - weather-network
+
+networks:
+  weather-network:
+    driver: bridge
